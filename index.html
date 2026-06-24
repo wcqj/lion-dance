@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<script src="js/manifest.js?timestamp=1782310823138"></script>
+    <script src="js/loader.js?timestamp=1782310823138"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
+<meta property="og:type" content="webpage" />
+<meta property="og:title" content="寻迹·岭南文化新叙事——佛山醒狮" />
+<meta property="og:image" content="" />
+<meta property="og:url" content="" />
+<meta property="og:description" content="传递岭南地区优秀传统文化魅力的H5交互作品" />
+<meta itemprop="name" content="寻迹·岭南文化新叙事——佛山醒狮" />
+<meta name="description" content="传递岭南地区优秀传统文化魅力的H5交互作品" />
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no">
+<title>寻迹·岭南文化新叙事 — 佛山醒狮</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;background:#1a0a00;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+#app{width:100%;height:100%;max-width:450px;margin:0 auto;position:relative;overflow:hidden;background:#1a0a00}
+/* 页面容器 */
+.page{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .5s ease;will-change:transform,opacity;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px}
+.page.hidden-left{transform:translateX(-110%);opacity:0;pointer-events:none}
+.page.hidden-right{transform:translateX(110%);opacity:0;pointer-events:none}
+.page.active{transform:translateX(0);opacity:1;pointer-events:auto;z-index:10}
+.page.exit-left{transform:translateX(-110%);opacity:0}
+.page.exit-right{transform:translateX(110%);opacity:0}
+/* ===== 加载页 ===== */
+#loadingPage{background:#1a0a00;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;position:relative}
+.loading-logo{width:60px;height:60px;border:3px solid #e53935;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;animation:logoSpin 2s linear infinite;box-shadow:0 0 30px rgba(229,57,53,.4)}
+@keyframes logoSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.loading-brand{margin-top:5px;display:flex;align-items:center;gap:8px}
+.loading-brand img{width:28px;height:28px}
+.loading-brand span{color:#fff;font-size:14px;font-weight:600;letter-spacing:1px}
+.loading-percent{color:#e53935;font-size:36px;font-weight:900;letter-spacing:2px;font-family:"Arial",sans-serif}
+.loading-bar-wrap{width:180px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.loading-bar{height:100%;background:#e53935;border-radius:2px;width:0;transition:width .3s ease}
+.mugeda-footer{position:absolute;bottom:30px;color:rgba(255,255,255,.4);font-size:11px;letter-spacing:1px}
+
+/* ===== 封面页 ===== */
+#coverPage{background:linear-gradient(180deg,rgba(26,10,0,.7) 0%,rgba(61,15,0,.75) 30%,rgba(107,26,0,.8) 70%,rgba(139,26,26,.85) 100%);z-index:5;gap:15px;justify-content:center;padding-bottom:60px}
+.cover-hero{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.55;animation:heroFadeIn 1.5s ease forwards}
+@keyframes heroFadeIn{from{opacity:0}to{opacity:.55}}
+.cover-lion{font-size:100px;animation:lionFloat 3s ease-in-out infinite;filter:drop-shadow(0 10px 30px rgba(212,33,61,.5))}
+@keyframes lionFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.cover-title{margin-top:-10px;text-align:center;position:relative;z-index:2}
+.cover-title .main{font-size:28px;font-weight:900;color:#ffc107;letter-spacing:4px;text-shadow:0 2px 10px rgba(212,33,61,.8);animation:titleGlow 2s ease-in-out infinite alternate}
+@keyframes titleGlow{0%{text-shadow:0 2px 10px rgba(212,33,61,.6)}100%{text-shadow:0 2px 30px rgba(255,193,7,.9),0 0 60px rgba(212,33,61,.8)}}
+.cover-title .sub{font-size:16px;color:#e8a87c;letter-spacing:8px;margin-top:8px;opacity:0;animation:fadeSlideUp .8s .5s forwards}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.cover-subtitle{color:#d4a574;font-size:13px;letter-spacing:3px;margin-top:5px;opacity:0;animation:fadeSlideUp .8s .8s forwards}
+.cover-decoration{display:flex;gap:15px;margin:15px 0;opacity:0;animation:fadeSlideUp .8s 1.1s forwards}
+.cover-decoration span{font-size:30px;animation:decoBounce 2s ease-in-out infinite}
+.cover-decoration span:nth-child(2){animation-delay:.3s}
+.cover-decoration span:nth-child(3){animation-delay:.6s}
+@keyframes decoBounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-12px)}}
+.start-btn{position:relative;margin-top:20px;padding:16px 60px;background:linear-gradient(135deg,#d4213d,#8b1a1a);color:#ffc107;font-size:20px;font-weight:700;border:none;border-radius:50px;letter-spacing:4px;cursor:pointer;opacity:0;animation:fadeSlideUp .8s 1.4s forwards;box-shadow:0 4px 20px rgba(212,33,61,.5);transition:transform .2s,box-shadow .2s}
+.start-btn:active{transform:scale(.95);box-shadow:0 2px 10px rgba(212,33,61,.3)}
+.start-btn::after{content:"";position:absolute;inset:-3px;border-radius:53px;border:2px solid rgba(255,193,7,.4);animation:btnRing 1.5s ease-out infinite}
+@keyframes btnRing{0%{transform:scale(1);opacity:1}100%{transform:scale(1.3);opacity:0}}
+/* SVG路径动画的狮子 */
+.cover-svg-lion{width:120px;height:120px;opacity:0;animation:fadeSlideUp .8s 1s forwards}
+.lion-path{fill:none;stroke:#ffc107;stroke-width:2;stroke-dasharray:300;stroke-dashoffset:300;animation:drawPath 3s 1.2s forwards}
+@keyframes drawPath{to{stroke-dashoffset:0}}
+
+/* ===== 内容介绍页通用 ===== */
+.content-page{background:linear-gradient(180deg,#2d0a0a 0%,#4a1010 40%,#3d0f00 100%);justify-content:flex-start;padding:30px 20px 40px;gap:20px;align-items:stretch}
+.content-title{font-size:22px;font-weight:900;color:#ffc107;text-align:center;letter-spacing:3px;margin-bottom:5px;opacity:0;transform:translateY(20px);transition:all .6s ease}
+.content-title.visible{opacity:1;transform:translateY(0)}
+.content-card{background:rgba(255,255,255,.05);border-radius:16px;padding:20px;border:1px solid rgba(255,193,7,.15);opacity:0;transform:translateY(30px);transition:all .6s ease}
+.content-card.visible{opacity:1;transform:translateY(0)}
+.content-card h3{color:#ffc107;font-size:17px;margin-bottom:10px;letter-spacing:2px}
+.content-card p{color:#d4a574;font-size:14px;line-height:1.8;text-align:justify}
+.content-card .highlight{color:#ff6b35;font-weight:700}
+.content-icon{font-size:50px;text-align:center;margin:10px 0}
+/* 介绍页图片 */
+.intro-img{width:100%;border-radius:12px;margin:10px 0;object-fit:cover;box-shadow:0 4px 20px rgba(0,0,0,.4);border:1px solid rgba(255,193,7,.2)}
+/* 路径动画装饰 */
+.flying-dot{position:absolute;width:8px;height:8px;background:#ffc107;border-radius:50%;box-shadow:0 0 10px #ffc107;animation:flyAround 8s linear infinite;pointer-events:none;z-index:1}
+@keyframes flyAround{0%{top:10%;left:10%}25%{top:20%;left:85%}50%{top:70%;left:90%}75%{top:80%;left:15%}100%{top:10%;left:10%}}
+.flying-dot:nth-child(2){animation-delay:-2.5s;animation-duration:10s;width:5px;height:5px;background:#d4213d}
+.flying-dot:nth-child(3){animation-delay:-5s;animation-duration:7s;width:6px;height:6px;background:#ff6b35}
+
+/* ===== 拼图互动页 ===== */
+#puzzlePage{background:linear-gradient(180deg,#2d0a0a 0%,#3d1500 100%);justify-content:flex-start;padding:25px 15px 40px;gap:15px}
+.puzzle-title{font-size:20px;font-weight:900;color:#ffc107;text-align:center;letter-spacing:3px;position:relative;z-index:2}
+.puzzle-desc{color:#d4a574;font-size:13px;text-align:center;margin-bottom:5px;position:relative;z-index:2}
+.puzzle-board{width:100%;max-width:320px;aspect-ratio:1;border-radius:12px;position:relative;overflow:hidden;border:2px solid rgba(255,193,107,.3)}
+.puzzle-reference{position:absolute;inset:0;background-image:url(assets/images/6dyy5co2b0000000000105.jpg);background-size:cover;background-position:center;opacity:.25;z-index:0}
+.puzzle-target{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;padding:4px;z-index:1}
+.puzzle-slot{background:rgba(255,255,255,.03);border-radius:8px;border:2px dashed rgba(255,193,7,.35);transition:all .3s}
+.puzzle-slot.filled{border-color:transparent}
+.puzzle-slot.correct{animation:correctPulse .5s ease}
+@keyframes correctPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.puzzle-pieces{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px;position:relative;z-index:2}
+.puzzle-piece{width:80px;height:80px;border-radius:10px;cursor:grab;touch-action:none;transition:transform .2s,box-shadow .2s;box-shadow:0 3px 10px rgba(0,0,0,.4);user-select:none;-webkit-user-select:none;position:relative;z-index:5;background-size:200% 200%;background-image:url(assets/images/6dyy5co2b0000000000105.jpg);border:2px solid rgba(255,193,7,.5)}
+.puzzle-piece[data-piece="0"]{background-position:0% 0%}
+.puzzle-piece[data-piece="1"]{background-position:100% 0%}
+.puzzle-piece[data-piece="2"]{background-position:0% 100%}
+.puzzle-piece[data-piece="3"]{background-position:100% 100%}
+.puzzle-piece:active{cursor:grabbing;transform:scale(1.1);box-shadow:0 5px 20px rgba(212,33,61,.6)}
+.puzzle-piece.dragging{opacity:.7;transform:scale(1.15);z-index:100;box-shadow:0 10px 30px rgba(212,33,61,.6)}
+.puzzle-piece.placed{opacity:.4;pointer-events:none;border-color:#2ecc71;box-shadow:0 0 10px rgba(46,204,113,.4)}
+.puzzle-counter{text-align:center;color:#ffc107;font-size:14px;letter-spacing:2px;margin-top:5px;position:relative;z-index:2}
+.puzzle-counter span{font-size:24px;font-weight:900;color:#ff6b35}
+.puzzle-complete{display:none;position:absolute;inset:0;background:rgba(0,0,0,.88);flex-direction:column;align-items:center;justify-content:center;z-index:20;border-radius:12px;gap:15px}
+.puzzle-complete.show{display:flex}
+.puzzle-complete img{width:80%;border-radius:12px;box-shadow:0 5px 30px rgba(255,193,7,.3)}
+.puzzle-complete .msg{color:#ffc107;font-size:18px;font-weight:700;letter-spacing:3px}
+.puzzle-complete .score{color:#ff6b35;font-size:14px}
+
+/* ===== 问答互动页 ===== */
+#quizPage{background:linear-gradient(180deg,#2d0a0a 0%,#3d0f00 100%);justify-content:flex-start;padding:25px 20px 40px;gap:18px;align-items:stretch}
+.quiz-title{font-size:20px;font-weight:900;color:#ffc107;text-align:center;letter-spacing:3px}
+/* 连线游戏区域 */
+.match-area{background:rgba(255,255,255,.05);border-radius:16px;padding:15px;border:1px solid rgba(255,193,7,.15)}
+.match-area h4{color:#ffc107;font-size:14px;text-align:center;margin-bottom:12px}
+.match-container{display:flex;justify-content:space-between;align-items:stretch;gap:10px}
+.match-col{display:flex;flex-direction:column;gap:10px;flex:1}
+.match-item{padding:12px 8px;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.1);border-radius:10px;text-align:center;color:#d4a574;font-size:13px;cursor:pointer;transition:all .3s;touch-action:manipulation}
+.match-item:hover,.match-item:active{background:rgba(212,33,61,.2);border-color:#d4213d}
+.match-item.selected{background:rgba(212,33,61,.3);border-color:#ffc107;color:#ffc107;box-shadow:0 0 15px rgba(255,193,7,.3)}
+.match-item.matched{background:rgba(46,204,113,.2);border-color:#2ecc71;color:#2ecc71;pointer-events:none}
+.match-item.wrong{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.match-result{text-align:center;font-size:12px;color:#ff6b35;min-height:18px;margin-top:8px}
+/* 问答表单 */
+.quiz-form{background:rgba(255,255,255,.05);border-radius:16px;padding:15px;border:1px solid rgba(255,193,7,.15)}
+.quiz-form h4{color:#ffc107;font-size:14px;text-align:center;margin-bottom:12px}
+.quiz-q{margin-bottom:12px}
+.quiz-q p{color:#e8a87c;font-size:13px;margin-bottom:8px}
+.radio-group{display:flex;flex-direction:column;gap:6px}
+.radio-opt{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,255,255,.05);border-radius:8px;cursor:pointer;transition:all .3s;touch-action:manipulation}
+.radio-opt:active{background:rgba(212,33,61,.15)}
+.radio-opt input[type=radio]{display:none}
+.radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.3);flex-shrink:0;transition:all .3s;position:relative}
+.radio-opt input:checked+.radio-dot{border-color:#ffc107;background:#d4213d;box-shadow:0 0 8px rgba(212,33,61,.5)}
+.radio-opt input:checked+.radio-dot::after{content:"";position:absolute;inset:3px;background:#ffc107;border-radius:50%}
+.radio-label{color:#d4a574;font-size:13px}
+.quiz-input{width:100%;padding:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#ffc107;font-size:13px;outline:none;transition:border-color .3s;resize:none;font-family:inherit}
+.quiz-input:focus{border-color:#ffc107}
+.quiz-input::placeholder{color:rgba(255,255,255,.3)}
+.submit-btn{display:block;width:100%;margin-top:12px;padding:12px;background:linear-gradient(135deg,#d4213d,#8b1a1a);color:#ffc107;font-size:16px;font-weight:700;border:none;border-radius:25px;letter-spacing:3px;cursor:pointer;touch-action:manipulation}
+.submit-btn:active{transform:scale(.97);opacity:.9}
+.quiz-score{display:none;text-align:center;padding:15px;background:rgba(255,193,7,.1);border-radius:12px;margin-top:10px}
+.quiz-score.show{display:block}
+.quiz-score .big{font-size:36px;font-weight:900;color:#ffc107}
+.quiz-score .txt{color:#d4a574;font-size:13px}
+
+/* ===== 结语页 ===== */
+#endPage{background:linear-gradient(180deg,rgba(26,10,0,.75) 0%,rgba(26,10,0,.8) 50%,rgba(13,5,0,.9) 100%);gap:20px}
+.end-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.4}
+.end-icon{font-size:70px;animation:lionFloat 3s ease-in-out infinite;position:relative;z-index:1}
+.end-title{font-size:22px;font-weight:900;color:#ffc107;letter-spacing:4px;text-align:center}
+.end-text{color:#d4a574;font-size:13px;line-height:2;text-align:center;max-width:280px}
+.end-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.end-tag{padding:6px 14px;background:rgba(212,33,61,.2);border:1px solid rgba(212,33,61,.3);border-radius:20px;color:#ffc107;font-size:12px;letter-spacing:1px}
+.restart-btn{margin-top:10px;padding:14px 50px;background:transparent;color:#ffc107;font-size:16px;font-weight:700;border:2px solid rgba(255,193,7,.4);border-radius:50px;letter-spacing:3px;cursor:pointer;touch-action:manipulation;transition:all .3s}
+.restart-btn:active{background:rgba(255,193,7,.1);border-color:#ffc107}
+
+/* ===== 全局底部导航 ===== */
+.bottom-nav{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:50;pointer-events:none}
+.bottom-nav .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .3s}
+.bottom-nav .dot.active{background:#ffc107;box-shadow:0 0 8px rgba(255,193,7,.6);width:24px;border-radius:4px}
+/* 音乐按钮 */
+.music-btn{position:absolute;top:15px;right:15px;z-index:60;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.15);color:#ffc107;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.music-btn.off{opacity:.5}
+/* 下一页提示 */
+.swipe-hint{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.3);font-size:11px;letter-spacing:2px;z-index:40;animation:fadeInOut 2.5s ease-in-out infinite;pointer-events:none}
+.page-indicator{color:rgba(255,255,255,.4);font-size:11px;position:absolute;top:12px;left:15px;z-index:60}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- 音乐按钮 -->
+  <button class="music-btn off" id="musicBtn" onclick="toggleMusic()" title="背景音乐">🔇</button>
+
+  <!-- ===== 加载页 ===== -->
+  <div class="page active" id="loadingPage">
+    <div class="loading-logo">🦁</div>
+    <div class="loading-brand">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e53935'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-size='16' fill='white' font-weight='bold'%3EM%3C/text%3E%3C/svg%3E" alt="Mugeda">
+      <span>木疙瘩</span>
+    </div>
+    <div class="loading-percent" id="loadPercent">0%</div>
+    <div class="loading-bar-wrap"><div class="loading-bar" id="loadBar"></div></div>
+    <div class="mugeda-footer">Mugeda H5 Player</div>
+  </div>
+
+  <!-- ===== 封面页 ===== -->
+  <div class="page hidden-right" id="coverPage">
+    <img class="cover-hero" src="assets/images/6dyy5co2b0000000000101.jpg" alt="佛山醒狮">
+    <div class="flying-dot"></div><div class="flying-dot"></div><div class="flying-dot"></div>
+    <div class="cover-title">
+      <div class="main">寻迹·岭南</div>
+      <div class="sub">文 化 新 叙 事</div>
+    </div>
+    <div class="cover-subtitle">—— 佛山醒狮 ——</div>
+    <div class="cover-decoration"><span>🏮</span><span>🥁</span><span>🏮</span></div>
+    <button class="start-btn" onclick="goToPage(1)">开 始 探 索</button>
+    <div class="swipe-hint">点击按钮开始 →</div>
+  </div>
+
+  <!-- ===== 第2页：醒狮起源 ===== -->
+  <div class="page content-page hidden-right" id="page2">
+    <div class="page-indicator">2 / 6</div>
+    <div class="content-title">🏮 醒狮起源</div>
+    <img class="intro-img" src="assets/images/6dyy5co2b0000000000104.jpg" alt="醒狮点睛仪式" style="height:200px">
+    <div class="content-card">
+      <h3>千年传承 · 岭南之魂</h3>
+      <p>醒狮，又称<span class="highlight">"南狮"</span>，起源于唐代，兴盛于明清。相传古时岭南地区瘟疫流行，乡民以舞狮驱邪避害，祈求平安吉祥。佛山作为中国南狮发源地，被誉为<span class="highlight">"狮艺之乡"</span>。</p>
+    </div>
+    <div class="content-card">
+      <h3>点睛仪式 · 赋予生命</h3>
+      <p>每一头新扎的醒狮，都需要经过隆重的<span class="highlight">"点睛"仪式</span>。德高望重者以朱砂点狮眼、狮鼻、狮口、狮耳、狮身，寓意赋予狮子灵性与生命，此后狮子便不再是道具，而是有灵之物。</p>
+    </div>
+    <button class="start-btn" style="padding:12px 40px;font-size:15px;margin-top:5px" onclick="goToPage(2)">继续了解 →</button>
+  </div>
+
+  <!-- ===== 第3页：醒狮文化 ===== -->
+  <div class="page content-page hidden-right" id="page3">
+    <div class="page-indicator">3 / 6</div>
+    <div class="content-title">🥁 醒狮文化</div>
+    <img class="intro-img" src="assets/images/6dyy5co2b0000000000103.jpg" alt="醒狮采青" style="height:200px">
+    <div class="content-card">
+      <h3>鼓乐激昂 · 刚柔并济</h3>
+      <p>醒狮表演讲究<span class="highlight">"人狮合一"</span>，以鼓、锣、钹伴奏。鼓点节奏变化多端——<span class="highlight">三星鼓、五星鼓、七星鼓</span>，每种鼓点对应不同的情绪与动作。狮头重达十余斤，舞者需经数年苦功方能驾驭。</p>
+    </div>
+    <div class="content-card">
+      <h3>采青纳福 · 吉祥如意</h3>
+      <p><span class="highlight">"采青"</span>是醒狮表演的高潮环节。主家将生菜（谐音"生财"）与红包悬于高处，醒狮需攀爬高杆、跳跃腾挪，最终"食青"纳福，寓意把好运与财富带给众人。</p>
+    </div>
+    <button class="start-btn" style="padding:12px 40px;font-size:15px;margin-top:5px" onclick="goToPage(3)">体验互动 →</button>
+  </div>
+
+  <!-- ===== 第4页：拼图互动（拖放容器） ===== -->
+  <div class="page hidden-right" id="puzzlePage">
+    <div class="page-indicator">4 / 6</div>
+    <div class="puzzle-title">🧩 重组醒狮</div>
+    <div class="puzzle-desc">将下方碎片拖放到正确位置，拼出完整醒狮</div>
+    <div class="puzzle-board" id="puzzleBoard">
+      <div class="puzzle-reference"></div>
+      <div class="puzzle-target" id="puzzleTarget">
+        <div class="puzzle-slot" data-slot="0"></div>
+        <div class="puzzle-slot" data-slot="1"></div>
+        <div class="puzzle-slot" data-slot="2"></div>
+        <div class="puzzle-slot" data-slot="3"></div>
+      </div>
+      <div class="puzzle-complete" id="puzzleComplete">
+        <img src="assets/images/6dyy5co2b0000000000105.jpg" alt="醒狮完整图">
+        <div class="msg">恭喜！醒狮重聚！</div>
+        <div class="score">你继承了岭南工匠精神</div>
+      </div>
+    </div>
+    <div class="puzzle-counter">已拼好：<span id="pieceCount">0</span> / 4</div>
+    <div class="puzzle-pieces" id="puzzlePieces">
+      <div class="puzzle-piece" draggable="true" data-piece="0" id="piece0"></div>
+      <div class="puzzle-piece" draggable="true" data-piece="1" id="piece1"></div>
+      <div class="puzzle-piece" draggable="true" data-piece="2" id="piece2"></div>
+      <div class="puzzle-piece" draggable="true" data-piece="3" id="piece3"></div>
+    </div>
+    <button class="start-btn" style="padding:12px 40px;font-size:15px" onclick="goToPage(4)">下一关 →</button>
+  </div>
+
+  <!-- ===== 第5页：连线互动 + 问答表单 ===== -->
+  <div class="page hidden-right" id="quizPage">
+    <div class="page-indicator">5 / 6</div>
+    <div class="quiz-title">🔗 醒狮知识大挑战</div>
+
+    <!-- 连线游戏（控件2：连线） -->
+    <div class="match-area">
+      <h4>📌 连线配对（点击左项再点右项）</h4>
+      <div class="match-container">
+        <div class="match-col" id="matchLeft">
+          <div class="match-item" data-match="drum">三星鼓</div>
+          <div class="match-item" data-match="pole">高杆采青</div>
+          <div class="match-item" data-match="eye">点睛仪式</div>
+        </div>
+        <div class="match-col" id="matchRight">
+          <div class="match-item" data-match="eye">赋予灵性</div>
+          <div class="match-item" data-match="pole">攀高纳福</div>
+          <div class="match-item" data-match="drum">激昂节奏</div>
+        </div>
+      </div>
+      <div class="match-result" id="matchResult">已匹配：0 / 3</div>
+    </div>
+
+    <!-- 问答表单（表单含单选+输入框） -->
+    <div class="quiz-form" id="quizForm">
+      <h4>📝 醒狮文化问答</h4>
+      <div class="quiz-q">
+        <p>1. 佛山醒狮属于南狮还是北狮？</p>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="q1" value="南狮"><span class="radio-dot"></span><span class="radio-label">南狮</span></label>
+          <label class="radio-opt"><input type="radio" name="q1" value="北狮"><span class="radio-dot"></span><span class="radio-label">北狮</span></label>
+          <label class="radio-opt"><input type="radio" name="q1" value="两者都是"><span class="radio-dot"></span><span class="radio-label">两者都是</span></label>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <p>2. "采青"中的"青"通常用什么蔬菜？</p>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="q2" value="白菜"><span class="radio-dot"></span><span class="radio-label">白菜</span></label>
+          <label class="radio-opt"><input type="radio" name="q2" value="生菜"><span class="radio-dot"></span><span class="radio-label">生菜（生财）</span></label>
+          <label class="radio-opt"><input type="radio" name="q2" value="青菜"><span class="radio-dot"></span><span class="radio-label">青菜</span></label>
+        </div>
+      </div>
+      <div class="quiz-q">
+        <p>3. 说说你对醒狮文化的感受（选填）：</p>
+        <input type="text" class="quiz-input" id="quizInput" placeholder="写下你的想法...">
+      </div>
+      <button class="submit-btn" onclick="submitQuiz()">提 交 答 案</button>
+      <div class="quiz-score" id="quizScore">
+        <div class="big" id="scoreNum">0</div>
+        <div class="txt">分 — 满分3分</div>
+      </div>
+    </div>
+    <button class="start-btn" style="padding:12px 40px;font-size:15px" onclick="goToPage(5)">查看结语 →</button>
+  </div>
+
+  <!-- ===== 第6页：结语页 ===== -->
+  <div class="page hidden-right" id="endPage">
+    <img class="end-bg" src="assets/images/6dyy5co2b0000000000102.jpg" alt="岭南村落剪影">
+    <div class="end-icon">🏮</div>
+    <div class="end-title">文 化 传 承</div>
+    <div class="end-text">
+      佛山醒狮，不只是一段舞蹈，<br>
+      它是岭南人<span style="color:#ffc107">勇敢坚毅</span>的精神图腾，<br>
+      是千年商都<span style="color:#ffc107">包容开放</span>的文化记忆，<br>
+      更是中华民族<span style="color:#ffc107">生生不息</span>的力量象征。
+    </div>
+    <div class="end-tags">
+      <span class="end-tag">非遗传承</span>
+      <span class="end-tag">岭南文化</span>
+      <span class="end-tag">醒狮精神</span>
+      <span class="end-tag">文化自信</span>
+    </div>
+    <button class="restart-btn" onclick="restart()">重 新 探 索</button>
+  </div>
+
+  <!-- 底部页面指示器 -->
+  <div class="bottom-nav" id="bottomNav">
+    <div class="dot active"></div>
+    <div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+
+</div>
+
+<!-- 背景音乐 -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/audio/6dyy5co2b0000000000201.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ===== 全局状态 =====
+let currentPage = -1; // -1=加载页, 0=封面, 1=第2页...5=结语
+const totalPages = 6; // 不包括加载页
+let musicOn = false;
+let matchedCount = 0;
+let puzzlePlaced = 0;
+let selectedLeft = null;
+
+// ===== 页面跳转 =====
+function goToPage(targetIdx) {
+  if (targetIdx === currentPage) return;
+  const pages = document.querySelectorAll('.page');
+  const oldIdx = currentPage;
+  const newIdx = targetIdx;
+
+  // 隐藏旧页面
+  if (oldIdx >= -1 && oldIdx < pages.length) {
+    const oldPage = document.getElementById(getPageId(oldIdx));
+    if (oldPage) {
+      oldPage.classList.remove('active');
+      oldPage.classList.add(newIdx > oldIdx ? 'exit-left' : 'exit-right');
+      setTimeout(() => {
+        oldPage.classList.remove('exit-left','exit-right');
+        oldPage.classList.add(newIdx > oldIdx ? 'hidden-left' : 'hidden-right');
+      }, 600);
+    }
+  }
+
+  // 显示新页面
+  const newPage = document.getElementById(getPageId(newIdx));
+  if (newPage) {
+    newPage.classList.remove('hidden-left','hidden-right','exit-left','exit-right');
+    newPage.classList.add('active');
+    // 滚动到顶部
+    newPage.scrollTop = 0;
+    // 触发内容动画
+    setTimeout(() => triggerContentAnimations(newPage), 200);
+  }
+
+  currentPage = newIdx;
+  updateNavDots();
+  updatePageIndicator();
+}
+
+function getPageId(idx) {
+  if (idx === -1) return 'loadingPage';
+  if (idx === 0) return 'coverPage';
+  if (idx === 1) return 'page2';
+  if (idx === 2) return 'page3';
+  if (idx === 3) return 'puzzlePage';
+  if (idx === 4) return 'quizPage';
+  if (idx === 5) return 'endPage';
+}
+
+function updateNavDots() {
+  const dots = document.querySelectorAll('#bottomNav .dot');
+  dots.forEach((d, i) => {
+    d.classList.toggle('active', i === Math.max(0, currentPage));
+  });
+  // 加载页隐藏导航点
+  document.getElementById('bottomNav').style.display = currentPage < 0 ? 'none' : 'flex';
+}
+
+function updatePageIndicator() {
+  const hint = document.querySelector('.swipe-hint');
+  if (hint) hint.style.display = currentPage <= 0 ? 'block' : 'none';
+}
+
+// ===== 内容动画触发 =====
+function triggerContentAnimations(page) {
+  const titles = page.querySelectorAll('.content-title');
+  const cards = page.querySelectorAll('.content-card');
+  titles.forEach((el, i) => {
+    el.classList.remove('visible');
+    setTimeout(() => el.classList.add('visible'), i * 150);
+  });
+  cards.forEach((el, i) => {
+    el.classList.remove('visible');
+    setTimeout(() => el.classList.add('visible'), (titles.length + i) * 150);
+  });
+}
+
+// ===== 背景音乐 =====
+function toggleMusic() {
+  const btn = document.getElementById('musicBtn');
+  const audio = document.getElementById('bgMusic');
+  musicOn = !musicOn;
+  if (musicOn) {
+    audio.play().catch(() => {});
+    btn.textContent = '🔊';
+    btn.classList.remove('off');
+  } else {
+    audio.pause();
+    btn.textContent = '🔇';
+    btn.classList.add('off');
+  }
+}
+
+// ===== 加载动画（模拟木疙瘩进度条） =====
+function simulateLoading() {
+  const percentEl = document.getElementById('loadPercent');
+  const barEl = document.getElementById('loadBar');
+  let percent = 0;
+  const target = 100;
+
+  function tick() {
+    // 模拟不均匀加载速度
+    let inc;
+    if (percent < 40) inc = Math.random() * 15 + 3;
+    else if (percent < 75) inc = Math.random() * 8 + 1;
+    else if (percent < 95) inc = Math.random() * 4 + 0.5;
+    else inc = Math.random() * 1 + 0.2;
+
+    percent = Math.min(percent + inc, target);
+    percentEl.textContent = Math.floor(percent) + '%';
+    barEl.style.width = percent + '%';
+
+    if (percent < target) {
+      setTimeout(tick, Math.random() * 200 + 80);
+    } else {
+      setTimeout(() => {
+        goToPage(0);
+        // 尝试自动播放音乐
+        const audio = document.getElementById('bgMusic');
+        audio.volume = 0.3;
+        audio.play().then(() => {
+          musicOn = true;
+          document.getElementById('musicBtn').textContent = '🔊';
+          document.getElementById('musicBtn').classList.remove('off');
+        }).catch(() => {});
+      }, 300);
+    }
+  }
+
+  tick();
+}
+
+window.addEventListener('DOMContentLoaded', simulateLoading);
+
+// ===== 拼图拖放交互 =====
+let draggedPiece = null;
+let dragStartX = 0, dragStartY = 0;
+let pieceStartX = 0, pieceStartY = 0;
+let isPuzzleDragging = false;
+
+function getPieceBgPos(pieceId) {
+  const map = {'0':'0% 0%','1':'100% 0%','2':'0% 100%','3':'100% 100%'};
+  return map[pieceId] || '0% 0%';
+}
+
+function initPuzzle() {
+  const pieces = document.querySelectorAll('.puzzle-piece');
+  const slots = document.querySelectorAll('.puzzle-slot');
+
+  pieces.forEach(piece => {
+    // 移动端触摸
+    piece.addEventListener('touchstart', handleDragStart, {passive: false});
+    piece.addEventListener('touchmove', handleDragMove, {passive: false});
+    piece.addEventListener('touchend', handleDragEnd);
+    // 桌面端原生拖拽
+    piece.addEventListener('dragstart', e => {
+      if (e.target.classList.contains('placed')) { e.preventDefault(); return; }
+      isPuzzleDragging = true;
+      draggedPiece = e.target;
+      // 防止浏览器把背景图当图片拖走搜索
+      e.dataTransfer.setData('text/plain', '');
+      e.dataTransfer.setDragImage(new Image(), 0, 0);
+      e.target.classList.add('dragging');
+    });
+    piece.addEventListener('dragend', e => {
+      e.target.classList.remove('dragging');
+      draggedPiece = null;
+      setTimeout(() => { isPuzzleDragging = false; }, 200);
+    });
+  });
+
+  slots.forEach(slot => {
+    slot.addEventListener('dragover', e => e.preventDefault());
+    slot.addEventListener('drop', handleDrop);
+  });
+}
+
+function handleDragStart(e) {
+  if (e.target.classList.contains('placed')) return;
+  isPuzzleDragging = true;
+  draggedPiece = e.target;
+  const touch = e.touches[0];
+  dragStartX = touch.clientX;
+  dragStartY = touch.clientY;
+  const rect = draggedPiece.getBoundingClientRect();
+  pieceStartX = rect.left;
+  pieceStartY = rect.top;
+  draggedPiece.classList.add('dragging');
+  draggedPiece.style.position = 'fixed';
+  draggedPiece.style.zIndex = '200';
+  draggedPiece.style.left = rect.left + 'px';
+  draggedPiece.style.top = rect.top + 'px';
+  draggedPiece.style.width = '80px';
+  draggedPiece.style.height = '80px';
+  draggedPiece.style.margin = '0';
+}
+
+function handleDragMove(e) {
+  if (!draggedPiece) return;
+  const touch = e.touches[0];
+  draggedPiece.style.left = (pieceStartX + touch.clientX - dragStartX) + 'px';
+  draggedPiece.style.top = (pieceStartY + touch.clientY - dragStartY) + 'px';
+}
+
+function handleDragEnd(e) {
+  if (!draggedPiece) return;
+  const pieceId = draggedPiece.dataset.piece;
+  draggedPiece.classList.remove('dragging');
+
+  const slots = document.querySelectorAll('.puzzle-slot');
+  slots.forEach(slot => {
+    if (slot.classList.contains('filled')) return;
+    const slotRect = slot.getBoundingClientRect();
+    const pieceRect = draggedPiece.getBoundingClientRect();
+    const cx = pieceRect.left + pieceRect.width / 2;
+    const cy = pieceRect.top + pieceRect.height / 2;
+    if (cx >= slotRect.left && cx <= slotRect.right && cy >= slotRect.top && cy <= slotRect.bottom) {
+      if (slot.dataset.slot === pieceId) {
+        slot.classList.add('filled', 'correct');
+        slot.style.backgroundImage = 'url(assets/images/6dyy5co2b0000000000105.jpg)';
+        slot.style.backgroundSize = '200% 200%';
+        slot.style.backgroundPosition = getPieceBgPos(pieceId);
+        draggedPiece.classList.add('placed');
+        puzzlePlaced++;
+        document.getElementById('pieceCount').textContent = puzzlePlaced;
+        if (puzzlePlaced >= 4) {
+          setTimeout(() => {
+            document.getElementById('puzzleComplete').classList.add('show');
+          }, 500);
+        }
+      }
+    }
+  });
+
+  draggedPiece.style.position = '';
+  draggedPiece.style.zIndex = '';
+  draggedPiece.style.left = '';
+  draggedPiece.style.top = '';
+  draggedPiece.style.width = '';
+  draggedPiece.style.height = '';
+  draggedPiece.style.margin = '';
+  draggedPiece = null;
+  setTimeout(() => { isPuzzleDragging = false; }, 200);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  if (!draggedPiece) return;
+  const slot = e.currentTarget;
+  if (slot.classList.contains('filled')) return;
+  const pieceId = draggedPiece.dataset.piece;
+  if (slot.dataset.slot === pieceId) {
+    slot.classList.add('filled', 'correct');
+    slot.style.backgroundImage = 'url(assets/images/6dyy5co2b0000000000105.jpg)';
+    slot.style.backgroundSize = '200% 200%';
+    slot.style.backgroundPosition = getPieceBgPos(pieceId);
+    draggedPiece.classList.add('placed');
+    puzzlePlaced++;
+    document.getElementById('pieceCount').textContent = puzzlePlaced;
+    if (puzzlePlaced >= 4) {
+      setTimeout(() => {
+        document.getElementById('puzzleComplete').classList.add('show');
+      }, 500);
+    }
+  }
+  draggedPiece = null;
+  setTimeout(() => { isPuzzleDragging = false; }, 200);
+}
+
+// ===== 连线配对游戏 =====
+function initMatchGame() {
+  const leftItems = document.querySelectorAll('#matchLeft .match-item');
+  const rightItems = document.querySelectorAll('#matchRight .match-item');
+
+  leftItems.forEach(item => {
+    item.addEventListener('click', () => {
+      if (item.classList.contains('matched')) return;
+      // 取消之前选择
+      leftItems.forEach(i => i.classList.remove('selected'));
+      item.classList.add('selected');
+      selectedLeft = item;
+    });
+  });
+
+  rightItems.forEach(item => {
+    item.addEventListener('click', () => {
+      if (!selectedLeft || item.classList.contains('matched')) return;
+      const leftMatch = selectedLeft.dataset.match;
+      const rightMatch = item.dataset.match;
+      if (leftMatch === rightMatch) {
+        // 正确！
+        selectedLeft.classList.add('matched');
+        item.classList.add('matched');
+        matchedCount++;
+        document.getElementById('matchResult').textContent = `✅ 正确！已匹配：${matchedCount} / 3`;
+        if (matchedCount >= 3) {
+          document.getElementById('matchResult').textContent = '🎉 全部正确！你太了解醒狮了！';
+        }
+      } else {
+        // 错误
+        item.classList.add('wrong');
+        document.getElementById('matchResult').textContent = '❌ 不对哦，再试试！';
+        setTimeout(() => item.classList.remove('wrong'), 400);
+      }
+      selectedLeft.classList.remove('selected');
+      selectedLeft = null;
+    });
+  });
+}
+
+// ===== 问答提交 =====
+function submitQuiz() {
+  let score = 0;
+  const q1 = document.querySelector('input[name="q1"]:checked');
+  const q2 = document.querySelector('input[name="q2"]:checked');
+  const q3 = document.getElementById('quizInput').value.trim();
+
+  if (q1 && q1.value === '南狮') score++;
+  if (q2 && q2.value === '生菜') score++;
+  if (q3.length > 0) score++; // 写了就给分
+
+  const scoreEl = document.getElementById('quizScore');
+  document.getElementById('scoreNum').textContent = score;
+  scoreEl.classList.add('show');
+  scoreEl.scrollIntoView({behavior: 'smooth'});
+}
+
+// ===== 重新开始 =====
+function restart() {
+  // 重置状态
+  puzzlePlaced = 0;
+  matchedCount = 0;
+  selectedLeft = null;
+  document.getElementById('pieceCount').textContent = '0';
+  document.getElementById('puzzleComplete').classList.remove('show');
+  document.getElementById('matchResult').textContent = '已匹配：0 / 3';
+  document.getElementById('quizScore').classList.remove('show');
+  document.querySelector('input[name="q1"]:checked')?.removeAttribute('checked');
+  document.querySelector('input[name="q2"]:checked')?.removeAttribute('checked');
+  document.getElementById('quizInput').value = '';
+
+  // 重置拼图
+  document.querySelectorAll('.puzzle-slot').forEach(s => { s.classList.remove('filled','correct'); s.style.backgroundImage = ''; s.style.backgroundSize = ''; s.style.backgroundPosition = ''; });
+  document.querySelectorAll('.puzzle-piece').forEach(p => p.classList.remove('placed'));
+  document.querySelectorAll('.match-item').forEach(m => m.classList.remove('matched','selected'));
+
+  goToPage(0);
+}
+
+// ===== 触摸滑动手势 =====
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, {passive: true});
+
+document.addEventListener('touchend', e => {
+  if (currentPage < 0 || isPuzzleDragging) return;
+  // 如果触摸的是拼图相关元素，不触发翻页
+  if (e.target.closest && e.target.closest('#puzzlePage')) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+    if (dx < 0 && currentPage < totalPages - 1) {
+      goToPage(currentPage + 1);
+    } else if (dx > 0 && currentPage > 0) {
+      goToPage(currentPage - 1);
+    }
+  }
+});
+
+// ===== 键盘导航（桌面调试） =====
+document.addEventListener('keydown', e => {
+  if (currentPage < 0) return;
+  if (e.key === 'ArrowRight' && currentPage < totalPages - 1) goToPage(currentPage + 1);
+  if (e.key === 'ArrowLeft' && currentPage > 0) goToPage(currentPage - 1);
+});
+
+// ===== 初始化所有交互 =====
+window.addEventListener('DOMContentLoaded', () => {
+  initPuzzle();
+  initMatchGame();
+  updateNavDots();
+});
+</script>
+</body>
+</html>

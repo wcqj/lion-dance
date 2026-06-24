@@ -1,0 +1,1 @@
+/* Mugeda card common stub */

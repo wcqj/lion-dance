@@ -1,0 +1,1 @@
+/* Mugeda page module stub */
